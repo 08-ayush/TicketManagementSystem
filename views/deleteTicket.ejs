@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ticket Management System</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #111111;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .ticket-form {
+    background-color: #222222;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    width: 400px;
+  }
+
+  .ticket-form h1 {
+    margin: 0 0 20px;
+    color: #ffffff;
+  }
+
+  .ticket-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #cccccc;
+    font-weight: bold;
+  }
+
+  .ticket-form input[type="text"],
+  .ticket-form textarea,
+  .ticket-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #555555;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #333333;
+  }
+
+  .ticket-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 10px;
+    background: url('arrow-down.png') no-repeat right #333333;
+  }
+
+  .ticket-form button {
+    background-color: #00cc99;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .ticket-form button:hover {
+    background-color: #00997a;
+  }
+</style>
+</head>
+<body>
+
+<div class="ticket-form">
+  <h1>Edit your Ticket</h1>
+  <form action="/ticket/delete" method="post">
+
+    <label for="title">Ticket ID:</label>
+    <input type="text" id="ticketid" name="ticketid" required>
+
+    <button type="submit">Edit details</button>
+  </form>
+</div>
+</body>
+</html>

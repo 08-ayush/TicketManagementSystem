@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kalam|Audiowide|Sofia|Trirong">
+<style>
+  /* ... Your existing styles ... */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  label, select, button, input {
+    margin: 5px;
+  }
+
+  select, button, input {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2E8B57;
+    cursor: pointer;
+  }
+
+  input {
+    width: 200px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  
+
+  .dashboard {
+    display: flex;
+    flex-direction: column; /* Updated flex-direction */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .card {
+    background-color: #1E824C;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h2 {
+    margin: 0;
+    padding: 0;
+  }
+
+  .card p {
+  }
+
+  .card .department {
+    font-style: italic;
+  }
+
+</style>
+<script>
+  // Sample data for the cards
+
+  let data; 
+
+  fetch('/ticket/all')
+    .then(response => response.json())
+    .then(json => {
+      data = json;
+      renderCards(data);
+    });
+
+
+  // Function to render cards based on data
+  function renderCards(cards) { 
+    const dashboard = document.querySelector('.dashboard');
+    dashboard.innerHTML = '';
+
+    cards.forEach(cardData => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      const title = document.createElement('h2');
+      title.textContent = cardData.title;
+
+      const description = document.createElement('p');
+      description.textContent = "Description: "+cardData.description;
+
+      const ticketId = document.createElement('p');
+      ticketId.textContent = "Ticket Id: "+cardData._id;
+
+      const status = document.createElement('p');
+      status.textContent = "status: "+cardData.status;
+
+      const department = document.createElement('p');
+      department.classList.add('department');
+      department.textContent = `Department: ${cardData.department}`;
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => {
+            fetch('/ticket/delete',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ticketId: cardData._id })
+            })
+            .then( function(data){ window.location.reload() }  );
+        });
+
+      card.appendChild(title);
+      card.appendChild(ticketId);
+      card.appendChild(description);
+      card.appendChild(department);
+      card.appendChild(status);
+      card.appendChild(deleteButton);
+      dashboard.appendChild(card);
+    });
+  }
+
+  // Filtering function
+  function filterCardsByDepartment(department) {
+    const filteredData = data.filter(item => item.department === department);
+    renderCards(filteredData);
+  }
+
+  // Sorting function
+  function sortCardsByTitle() {
+    const sortedData = [...data].sort((a, b) => a.title.localeCompare(b.title));
+    renderCards(sortedData);
+  }
+
+  // Searching function
+  function searchCardsByTitle(keyword) {
+    const searchData = data.filter(item => item.title.toLowerCase().includes(keyword.toLowerCase()));
+    renderCards(searchData);
+  }
+
+  // Exporting function (not implemented in this example)
+  function exportDataForAnalysis() {
+    // Implement export functionality here
+    alert('Exporting data for analysis...');
+  }
+
+  function locateToResolver(){
+    window.location.href = "/resolver/signup";
+  }
+
+</script>
+</head>
+<body>
+  
+  <div style="justify-content: center; background-color: rgba(143, 193, 240, 0.281); box-shadow: 0 4px 6px rgba(48, 48, 48, 0.158);">
+    <br>
+    <!-- <label for="departmentFilter" style="font-size: 18px; margin-left: 30px;">Filter by Department:</label> -->
+    <input placeholder="Search" style="margin-left: 50px; font-size: 18px; background-color: white; border: solid; border-color: #302e2e57;" type="text" id="searchInput"  oninput="searchCardsByTitle(this.value)">
+   
+    <select style="font-size: 18px; background-color: transparent; border: none; " id="departmentFilter" onchange="filterCardsByDepartment(this.value)">
+      <option style="font-size: 18px;" value="">Filter by</option>
+      <option style="font-size: 18px;" value="technical">Technical</option>
+      <option style="font-size: 18px;" value="electrical">Electrical</option>
+      <option style="font-size: 18px;" value="others">Others</option>
+    </select>
+    
+    <button style="font-size: 18px; background-color: transparent; border: none;" onclick="sortCardsByTitle()">Sort by Title</button>
+    
+     
+    <button style="font-size: 18px; background-color: transparent; border: none;" onclick="exportDataForAnalysis()">Export Data</button>
+
+    <button style="font-size: 18px; background-color: transparent; border: none;" onclick="locateToResolver()">Create Resolver</button>
+    
+
+    <button style="font-size: 18px; background-color: transparent; border: none; margin-left: 600px; font-family: audiowide;" >Admin</button>
+
+    <br>
+    <br style="">
+  </div>
+  
+
+
+  <div class="dashboard">
+    <!-- Cards will be rendered here using JavaScript -->
+  </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background-color: #2d2d2d;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #333;
+      color: #fff;
+    }
+
+    .login-button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .login-button:hover {
+      background-color: #45a049;
+    }
+
+    .signup-link {
+      margin-top: 10px;
+      display: inline-block;
+      color: #4caf50;
+      text-decoration: none;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <% if(message) { %>
+        <p style="color:red"><%= message %></p>
+    <% } %>
+    <h1> Create Resolver </h1>
+    <form action="/resolver/signup" method="post">
+      <input type="text" class="input-field" placeholder="Username" name="username">
+      <input type="password" class="input-field" placeholder="Password" name="password">
+      <input type="text" class="input-field" placeholder="Dept." name="department">
+      <button class="login-button">Create</button>
+    </form>
+  </div>
+</body>
+</html>

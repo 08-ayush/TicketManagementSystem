@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resolver Dashboard</title>
+<style>
+  /* ... Your existing styles ... */
+  label, select, button, input {
+    margin: 5px;
+  }
+
+  select, button, input {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2E8B57;
+    color: white;
+    cursor: pointer;
+  }
+
+  input {
+    width: 200px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: white;
+  }
+
+  .dashboard {
+    display: flex;
+    flex-direction: column; /* Updated flex-direction */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: black;
+  }
+
+  .card {
+    background-color: #1E824C;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h2 {
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
+
+  .card p {
+    color: #ccc;
+  }
+
+  .card .department {
+    font-style: italic;
+  }
+</style>
+<script>
+  // Sample data for the cards
+
+  let data; 
+
+  fetch('/ticket/dept')
+    .then(response => response.json())
+    .then(json => {
+      data = json;
+    renderCards(data);
+    });
+
+
+
+
+  // Function to render cards based on data
+  function renderCards(cards) { 
+    const dashboard = document.querySelector('.dashboard');
+    dashboard.innerHTML = '';
+
+    cards.forEach(cardData => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+
+      const title = document.createElement('h2');
+      title.textContent = cardData.title;
+
+      const ticketId = document.createElement('p');
+      ticketId.textContent = 'Ticket ID: '+cardData._id;
+
+      const description = document.createElement('p');
+      description.textContent = 'Description: '+cardData.description;
+
+      const status = document.createElement('p');
+      status.textContent = 'Status: '+cardData.status;
+
+      const department = document.createElement('p');
+      department.classList.add('department');
+      department.textContent = `Department: ${cardData.department}`;
+
+      const button = document.createElement('button');
+      button.textContent = 'Chat';
+      button.addEventListener('click', () => {
+            window.location.href = `/chat/`;
+        });
+
+      const markButton = document.createElement('button');
+      markButton.textContent = 'Mark as Resolved';
+
+      
+      markButton.addEventListener('click', () => {
+
+        const doc = { ...cardData, status: 'RESOLVED', ticketId: cardData._id }; 
+        console.log(doc);
+
+            fetch('/ticket/edit',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(doc)
+            })
+            .then( function(data){
+                window.location.href = '/resolver/resolverdashboard';
+            } );
+        });
+
+
+      
+
+
+      card.appendChild(title);
+      card.appendChild(ticketId);
+      card.appendChild(description);
+      card.appendChild(department);
+      card.appendChild(status);
+      card.appendChild(button);
+      card.appendChild(markButton);
+
+      dashboard.appendChild(card);
+    });
+  }
+
+
+</script>
+</head>
+<body>
+  
+
+  <div class="dashboard">
+    <!-- Cards will be rendered here using JavaScript -->
+  </div>
+</body>
+</html>
